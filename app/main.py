@@ -1,12 +1,9 @@
 import os
 
-
 import fix_path
-
 
 import tweepy
 from flask import Flask
-from dotenv import load_dotenv
 
 from utils.gcp_secrets import GCPSecretHandler
 from utils.gcp_writer import GCPWriter
@@ -15,23 +12,19 @@ from utils.twitter_streamer import StreamListenerImpl
 from google.cloud import storage
 from google.cloud import secretmanager
 
+project_id = os.getenv('GOOGLE_CLOUD_PROJECT')
+
 storage_client = storage.Client()
 secret_client = secretmanager.SecretManagerServiceClient()
 
-load_dotenv()
-auth = tweepy.OAuthHandler(os.getenv('CONSUMER_KEY'), os.getenv('CONSUMER_SECRET'))
-auth.set_access_token(os.getenv('ACCESS_TOKEN'), os.getenv('ACCESS_TOKEN_SECRET'))
-api = tweepy.API(auth)
-
-
-gcp_secret_handler = GCPSecretHandler(secret_client)
-
+gcp_secret_handler = GCPSecretHandler(project_id, secret_client)
 gcp_writer = GCPWriter(storage_client)
-
 streamListener = StreamListenerImpl(gcp_writer)
 
+auth = tweepy.OAuthHandler(gcp_secret_handler.get_tck(), gcp_secret_handler.get_tcs())
+auth.set_access_token(gcp_secret_handler.get_tat(), gcp_secret_handler.get_tats())
+api = tweepy.API(auth)
 myStream = tweepy.Stream(auth=api.auth, listener=streamListener)
-
 
 app = Flask(__name__)
 
