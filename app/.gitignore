@@ -1,0 +1,21 @@
+# python ignore
+.installed.cfg
+bin
+develop-eggs
+dist
+downloads
+eggs
+parts
+src/*.egg-info
+lib
+lib64
+
+git
+
+# pycharm ignore
+/venv
+.idea/
+
+# project ignore
+.env
+
