@@ -7,7 +7,7 @@ class GCPWriter:
         self._df = pd.DataFrame(columns=["user_id", "user_name", "tweet_id", "tweet_text"])
         self._bucket = storage_client.get_bucket('sentiment4ace120b')
         self._client = storage_client
-        self._bucket.blob('upload_test_two/test.csv').upload_from_string(1, 'text/csv')
+        self._bucket.blob('upload_test_two/test.csv').upload_from_string("1", 'text/csv')
 
     def add_record(self, row):
         self._df = self._df.append(row, ignore_index=True)
