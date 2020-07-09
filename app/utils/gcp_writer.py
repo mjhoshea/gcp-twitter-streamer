@@ -5,7 +5,7 @@ class GCPWriter:
 
     def __init__(self, storage_client):
         self._df = pd.DataFrame(columns=["user_id", "user_name", "tweet_id", "tweet_text"])
-        self._bucket = storage_client.get_bucket('sentimentef9cfe64')
+        self._bucket = storage_client.get_bucket('sentiment4ace120b')
         self._client = storage_client
 
     def add_record(self, row):
