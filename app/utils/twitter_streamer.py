@@ -24,9 +24,4 @@ class StreamListenerImpl(StreamListener):
     def on_status(self, status):
         print(status.text)
 
-    def stop(self):
-        self.contin = False
-
-    def start(self):
-        self.contin = True
 

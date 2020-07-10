@@ -18,7 +18,7 @@ storage_client = storage.Client()
 secret_client = secretmanager.SecretManagerServiceClient()
 
 gcp_secret_handler = GCPSecretHandler(project_id, secret_client)
-gcp_writer = GCPWriter(storage_client)
+gcp_writer = GCPWriter(project_id, storage_client)
 streamListener = StreamListenerImpl(gcp_writer)
 
 auth = tweepy.OAuthHandler(gcp_secret_handler.get_tck(), gcp_secret_handler.get_tcs())
@@ -36,7 +36,6 @@ def home():
 
 @app.route('/track/<topic>')
 def track_topic(topic):
-    streamListener.start()
     myStream.filter(track=[topic], is_async=True)
     return 'Getting Your Topic'
 
